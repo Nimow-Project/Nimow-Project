@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.nimowproject.nimowproject"
+        minSdk 16
+        targetSdk 32
+        // (Major).(Minor).(point)
+        versionName '1.0.0'
+        versionCode 1
+    }
+
+    applicationVariants.all { variant ->
+        variant.resValue "string", "app_version", variant.versionName
+        variant.outputs.all { output ->
+            if (variant.buildType.name == 'debug') {
+                outputFileName = "Nimow Project_${defaultConfig.versionName}_debug.apk"
+            } else {
+                outputFileName = "Nimow Project_${defaultConfig.versionName}.apk"
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix ".dev"
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            getIsDefault().set(true)
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    compileOnly 'de.robv.android.xposed:api:82'
+}
+
